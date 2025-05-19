@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.personaltasks.R
 import java.util.Locale
@@ -14,6 +15,8 @@ import java.util.UUID
 class CadastroActivity : AppCompatActivity() {
 
     // Referência dos componentes
+
+    private var id : UUID = UUID.randomUUID();
     private lateinit var editTextNome: EditText
     private lateinit var editTextDescricao: EditText
     private lateinit var selectedDateText: TextView
@@ -30,7 +33,12 @@ class CadastroActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_cadastro);
 
-
+            editTextNome = findViewById(R.id.editText1)
+            editTextDescricao = findViewById(R.id.editText2)
+            selectedDateText = findViewById(R.id.selectedDateText)
+            buttonDatePicker = findViewById(R.id.button_date_picker)
+            buttonSalvar = findViewById(R.id.button2)
+            buttonCancelar = findViewById(R.id.button3)
 
 
             // Função a ser chamada com o botão do datePicker
@@ -82,6 +90,36 @@ class CadastroActivity : AppCompatActivity() {
     private fun atualizarTextoData() {
         val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         selectedDateText.text = "Data escolhida: ${formato.format(dataSelecionada?.time)}"
+    }
+
+    /*
+        * Pega os valores digitados pelo usuário
+        * Se algum campo (obrigatório) estiver vazio mostra erro e para
+        * Se tudo estiver certo, mostra uma mensagem de sucesso
+     */
+
+    private fun salvarTarefa() {
+        val nome = editTextNome.text.toString().trim()
+        val descricao = editTextDescricao.text.toString().trim()
+        val data = dataSelecionada?.time
+
+        if (nome.isEmpty()) {
+            editTextNome.error = "Informe o nome da tarefa"
+            return
+        }
+        if (descricao.isEmpty()) {
+            editTextDescricao.error = "Informe a descrição"
+            return
+        }
+        if (data == null) {
+            Toast.makeText(this, "Escolha uma data limite", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Salvar no banco e passar via intent : a ser adicionado
+
+        Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show()
+        finish()
     }
 
 }
