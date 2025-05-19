@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:weightSum="1">
+
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:background="#FFFFFF"
+        android:fontFamily="sans-serif-black"
+        android:paddingBottom="16dp"
+        android:text="Cadastro de Atividade"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="22sp" />
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp" />
+
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="text"
+        android:text="Digite o nome da tarefa"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="text"
+        android:text="Descrição da tarefa"
+        android:textSize="14sp" />
+
+
+    <TextView
+        android:id="@+id/selectedDateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="Data escolhida: Nenhuma"
+        android:textColor="#090808"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/button_date_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="#090808"
+        android:text="Escolher Data"
+        android:textColor="#FBF9F9" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="#090808"
+            android:text="SALVAR"
+            android:textAlignment="center"
+            android:textColor="#FBF9F9" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="#090808"
+            android:text="CANCELAR"
+            android:textAlignment="center"
+            android:textColor="#FBF9F9" />
+
+    </LinearLayout>
+
+</LinearLayout>
