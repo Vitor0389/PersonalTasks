@@ -1,5 +1,6 @@
 package com.personaltasks.controller
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.personaltasks.R
+import com.personaltasks.model.Tarefa
 import java.util.Locale
 import java.util.UUID
 
@@ -116,7 +118,12 @@ class CadastroActivity : AppCompatActivity() {
             return
         }
 
-        // Salvar no banco e passar via intent : a ser adicionado
+        val tarefa = Tarefa(id, nome, descricao, data)
+        val intent = Intent()
+        intent.putExtra("tarefa", tarefa)
+        setResult(RESULT_OK, intent)
+        finish()
+
 
         Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show()
         finish()
