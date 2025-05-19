@@ -9,4 +9,6 @@ data class Tarefa(
     val nome: String,
     val descricao: String,
     val data: Date
-) : Serializable
+) : Serializable {
+
+}
