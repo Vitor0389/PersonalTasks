@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#F0F0F0"
+    android:margin="8dp">
+
+    <TextView
+        android:id="@+id/textTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Título da tarefa"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textDescricao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descrição da tarefa"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/textDataLimite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data limite: 01/01/2025"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:layout_marginTop="6dp" />
+
+</LinearLayout>
