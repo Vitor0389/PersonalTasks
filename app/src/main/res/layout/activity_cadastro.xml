@@ -17,7 +17,7 @@
         android:background="#FFFFFF"
         android:fontFamily="sans-serif-black"
         android:paddingBottom="16dp"
-        android:text="Cadastro de Atividade"
+        android:text="@string/cadastro_de_atividade"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="22sp" />
@@ -32,12 +32,15 @@
         android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:gravity="center"
         android:inputType="text"
-        android:text="Digite o nome da tarefa"
+        android:hint="@string/digite_nome_tarefa"
+        android:autofillHints="username"
         android:textSize="14sp" />
+
 
     <EditText
         android:id="@+id/editText2"
@@ -47,8 +50,9 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="text"
-        android:text="Descrição da tarefa"
-        android:textSize="14sp" />
+        android:text="@string/descricao_tarefa"
+        android:textSize="14sp"
+        android:autofillHints="text" />
 
 
     <TextView
@@ -57,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Data escolhida: Nenhuma"
+        android:text="@string/data_escolhida_nenhuma"
         android:textColor="#090808"
         android:textSize="14sp" />
 
@@ -68,7 +72,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:background="#090808"
-        android:text="Escolher Data"
+        android:text="@string/escolher_data"
         android:textColor="#FBF9F9" />
 
 
@@ -82,22 +86,22 @@
         <Button
             android:id="@+id/button2"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:background="#090808"
-            android:text="SALVAR"
+            android:text="@string/textSalvar"
             android:textAlignment="center"
             android:textColor="#FBF9F9" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:background="#090808"
-            android:text="CANCELAR"
+            android:text="@string/textCancelar"
             android:textAlignment="center"
             android:textColor="#FBF9F9" />
 
