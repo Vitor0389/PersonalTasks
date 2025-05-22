@@ -1,5 +1,6 @@
-package com.personaltasks.adapter
+package com.personaltasks.view
 
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,39 @@ import java.util.Locale
 
 // Adapter que conecta minha lista de tarefas com o recyclerView
 class TarefaAdapter(
-    private val listaTarefas: MutableList<Tarefa>
+    private val listaTarefas: MutableList<Tarefa>,
+    private val listener : OnItemLongClickListener
 ) : RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>() {
 
+    interface OnItemLongClickListener{
+        fun onItemLongClick(view: View, position: Int);
+    }
+
     // ViewHolder guarda as referências dos componentes do item_tarefa.xml
-    class TarefaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TarefaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+    View.OnCreateContextMenuListener{
         val titulo: TextView = itemView.findViewById(R.id.textTitulo)
         val descricao: TextView = itemView.findViewById(R.id.textDescricao)
         val dataLimite: TextView = itemView.findViewById(R.id.textDataLimite)
+
+        init {
+            itemView.setOnCreateContextMenuListener(this)
+            itemView.setOnLongClickListener{
+                listener.onItemLongClick(it, adapterPosition)
+                false
+            }
+        }
+
+        override fun onCreateContextMenu(
+            menu: ContextMenu,
+            v: View,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
+           menu.setHeaderTitle("Opções da tarefa")
+           menu.add(adapterPosition, R.id.menu_editar, 0, "Editar tarefas");
+           menu.add(adapterPosition, R.id.menu_excluir, 1, "Excluir tarefa")
+           menu.add(adapterPosition, R.id.menu_detalhes, 2, "Detalhes")
+        }
     }
 
     // Cria a view para cada item, com base no item_tarefa.xml
@@ -43,4 +69,6 @@ class TarefaAdapter(
 
     // Conta quantos itens tem na lista
     override fun getItemCount(): Int = listaTarefas.size
+
+
 }
