@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_editar"
-        android:title="Editar tarefa" />
+        android:title="@string/editar_tarefa" />
     <item
         android:id="@+id/menu_excluir"
-        android:title="Excluir tarefa" />
+        android:title="@string/excluir_tarefa" />
     <item
         android:id="@+id/menu_detalhes"
-        android:title="Detalhes" />
+        android:title="@string/detalhes" />
 </menu>

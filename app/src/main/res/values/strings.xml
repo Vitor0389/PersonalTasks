@@ -9,4 +9,9 @@
     <string name="escolher_data">Escolher Data</string>
     <string name="textSalvar">SALVAR</string>
     <string name="textCancelar">CANCELAR</string>
+    <string name="titulo_tarefa">Título da tarefa</string>
+    <string name="data_limite">Data limite: 01/01/2025</string>
+    <string name="editar_tarefa">Editar Tarefa</string>
+    <string name="excluir_tarefa">Excluir Tarefa</string>
+    <string name="detalhes">Detalhes</string>
 </resources>

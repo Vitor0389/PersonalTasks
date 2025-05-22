@@ -12,7 +12,7 @@
         android:id="@+id/textTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Título da tarefa"
+        android:text="@string/titulo_tarefa"
         android:textSize="18sp"
         android:textColor="#000000"
         android:textStyle="bold"/>
@@ -21,7 +21,7 @@
         android:id="@+id/textDescricao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descrição da tarefa"
+        android:text="@string/descricao_tarefa"
         android:textSize="14sp"
         android:textColor="#333333"
         android:layout_marginTop="4dp"/>
@@ -30,7 +30,7 @@
         android:id="@+id/textDataLimite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Data limite: 01/01/2025"
+        android:text="@string/data_limite"
         android:textSize="12sp"
         android:textColor="#666666"
         android:layout_marginTop="6dp" />
