@@ -26,7 +26,7 @@ class CadastroActivity : AppCompatActivity() {
     private lateinit var buttonSalvar: Button
     private lateinit var buttonCancelar: Button
 
-    private var dataSelecionada: Calendar? = null
+    private var dataSelecionada: Calendar? = null   
 
 
 
@@ -41,6 +41,28 @@ class CadastroActivity : AppCompatActivity() {
             buttonDatePicker = findViewById(R.id.button_date_picker)
             buttonSalvar = findViewById(R.id.button2)
             buttonCancelar = findViewById(R.id.button3)
+
+            // Recebe tarefa e ação da intent
+            val tarefa = intent.getSerializableExtra("tarefa") as? Tarefa
+            val acao = intent.getStringExtra("acao") ?: "novo"
+
+
+            // Se veio tarefa, popula os campos para edição/detalhes
+            tarefa?.let {
+                id = it.id
+                editTextNome.setText(it.nome)
+                editTextDescricao.setText(it.descricao)
+                dataSelecionada = Calendar.getInstance().apply { time = it.data }
+                atualizarTextoData()
+            }
+
+            // Se for modo detalhes, desabilita edição e salvar
+            if (acao == "detalhes") {
+                editTextNome.isEnabled = false
+                editTextDescricao.isEnabled = false
+                buttonDatePicker.isEnabled = false
+                buttonSalvar.isEnabled = false
+            }
 
 
             // Função a ser chamada com o botão do datePicker
