@@ -33,7 +33,7 @@ class TarefaAdapter(
             itemView.setOnCreateContextMenuListener(this)
             itemView.setOnLongClickListener{
                 listener.onItemLongClick(it, adapterPosition)
-                false
+                true
             }
         }
 
