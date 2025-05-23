@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val tarefa = result.data?.getSerializableExtra("tarefa") as? Tarefa
+                val tarefa = result.data?.getParcelableExtra<Tarefa>("tarefa")
                 tarefa?.let {
                     lifecycleScope.launch {
                         if (selectedPosition >= 0) {

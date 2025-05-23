@@ -45,7 +45,7 @@ class CadastroActivity : AppCompatActivity() {
             buttonCancelar = findViewById(R.id.button3)
 
             // Recebe tarefa e ação da intent
-            val tarefa = intent.getSerializableExtra("tarefa") as? Tarefa
+            val tarefa = intent.getParcelableExtra<Tarefa>("tarefa")
             val acao = intent.getStringExtra("acao") ?: "novo"
 
 
