@@ -1,4 +1,4 @@
-package com.personaltasks.controller
+package com.personaltasks.view
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
@@ -26,7 +26,9 @@ class CadastroActivity : AppCompatActivity() {
     private lateinit var buttonSalvar: Button
     private lateinit var buttonCancelar: Button
 
-    private var dataSelecionada: Calendar? = null   
+    private var dataSelecionada: Calendar? = null
+
+
 
 
 

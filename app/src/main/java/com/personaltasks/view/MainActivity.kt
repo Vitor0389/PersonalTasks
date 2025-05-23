@@ -1,4 +1,4 @@
-package com.personaltasks.controller
+package com.personaltasks.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.personaltasks.R
+import com.personaltasks.controller.TarefaController
 import com.personaltasks.model.AppDatabase
 import com.personaltasks.model.Tarefa
-import com.personaltasks.view.TarefaAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,13 +29,14 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
 
     private lateinit var db: AppDatabase
 
+    private lateinit var tarefaController : TarefaController;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        db = AppDatabase.getDatabase(this) // pega a instância do banco
-
         adapter = TarefaAdapter(tarefas, this)
+        tarefaController = TarefaController(this)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewTarefas)
         recyclerView.adapter = adapter
@@ -49,14 +50,14 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
                     lifecycleScope.launch {
                         if (selectedPosition >= 0) {
                             // Atualiza no banco e na lista
-                            db.tarefaDao().atualizar(it)
+                            tarefaController.atualizar(it)
                             tarefas[selectedPosition] = it
                             withContext(Dispatchers.Main) {
                                 adapter.notifyItemChanged(selectedPosition)
                             }
                         } else {
                             // Insere no banco e na lista
-                            db.tarefaDao().inserir(it)
+                            tarefaController.inserir(it)
                             tarefas.add(it)
                             withContext(Dispatchers.Main) {
                                 adapter.notifyItemInserted(tarefas.size - 1)
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
 
     private fun carregarTarefas() {
         lifecycleScope.launch {
-            val lista = db.tarefaDao().listar()
+            val lista = tarefaController.listar();
             tarefas.clear()
             tarefas.addAll(lista)
             withContext(Dispatchers.Main) {
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
             }
             R.id.menu_excluir -> {
                 lifecycleScope.launch {
-                    db.tarefaDao().excluir(tarefa)
+                    tarefaController.excluir(tarefa)
                     tarefas.removeAt(selectedPosition)
                     withContext(Dispatchers.Main) {
                         adapter.notifyItemRemoved(selectedPosition)

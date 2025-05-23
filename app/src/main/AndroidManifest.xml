@@ -14,10 +14,11 @@
         android:theme="@style/Theme.PersonalTasks"
         tools:targetApi="31">
 
-        <activity android:name=".controller.CadastroActivity" />
+        <activity android:name=".view.CadastroActivity" />
+
 
         <activity
-            android:name=".controller.MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.PersonalTasks">
             <intent-filter>
