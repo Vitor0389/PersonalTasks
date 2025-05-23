@@ -35,3 +35,6 @@ Execute em um emulador ou dispositivo físico.
 Android Studio LadyBug ou superior.
 
 SDK mínimo: 21 (Lollipop).
+
+
+Link para o vídeo de execução do app : https://drive.google.com/file/d/1U1lDUsdxvPqYAQejv5DD4zeXpq8BkmiC/view?usp=sharing
