@@ -9,55 +9,61 @@ import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.personaltasks.R
-import com.personaltasks.view.TarefaAdapter
+import com.personaltasks.model.AppDatabase
 import com.personaltasks.model.Tarefa
-
+import com.personaltasks.view.TarefaAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener {
 
     private val tarefas = mutableListOf<Tarefa>()
-    private lateinit var adapter : TarefaAdapter
+    private lateinit var adapter: TarefaAdapter
     private var selectedPosition = -1
     private lateinit var launcher: ActivityResultLauncher<Intent>
+
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        db = AppDatabase.getDatabase(this) // pega a instância do banco
+
         adapter = TarefaAdapter(tarefas, this)
 
-        /*
-           * Cria a lista tarefas e passa para o TarefaAdapter
-           * RecycleView usa esse adapter p mostrar cada tarefa usando o layout do item_tarefa.xml
-           * Quando o usuario cria na CadastroActivity ela é retornada para a Main
-           * Adiciona a tarefa na lista e "avisa" o adapter para atualizar na tela
-
-         */
-
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewTarefas);
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewTarefas)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
         registerForContextMenu(recyclerView)
 
-        // launcher para receber resultado da segunda activity
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val tarefa = result.data?.getSerializableExtra("tarefa") as? Tarefa
                 tarefa?.let {
-                    if(selectedPosition >= 0){
-                        tarefas[selectedPosition] = it
-                        adapter.notifyItemChanged(selectedPosition);
+                    lifecycleScope.launch {
+                        if (selectedPosition >= 0) {
+                            // Atualiza no banco e na lista
+                            db.tarefaDao().atualizar(it)
+                            tarefas[selectedPosition] = it
+                            withContext(Dispatchers.Main) {
+                                adapter.notifyItemChanged(selectedPosition)
+                            }
+                        } else {
+                            // Insere no banco e na lista
+                            db.tarefaDao().inserir(it)
+                            tarefas.add(it)
+                            withContext(Dispatchers.Main) {
+                                adapter.notifyItemInserted(tarefas.size - 1)
+                            }
+                        }
+                        selectedPosition = -1
                     }
-                    else{
-                        tarefas.add(it)
-                        adapter.notifyItemInserted(tarefas.size - 1)
-                    }
-                    selectedPosition = -1
                 }
             }
         }
@@ -68,12 +74,24 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
             launcher.launch(intent)
         }
 
-        }
+        // Carrega as tarefas do banco ao iniciar a activity
+        carregarTarefas()
+    }
 
+    private fun carregarTarefas() {
+        lifecycleScope.launch {
+            val lista = db.tarefaDao().listar()
+            tarefas.clear()
+            tarefas.addAll(lista)
+            withContext(Dispatchers.Main) {
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
 
     override fun onItemLongClick(view: View, position: Int) {
         selectedPosition = position
-        view.showContextMenu() // mostra o menu de contexto
+        view.showContextMenu()
     }
 
     override fun onCreateContextMenu(
@@ -82,37 +100,39 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        // menu já criado no adapter, não precisa criar aqui
+        // menu criado no adapter
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val tarefa = tarefas.getOrNull(selectedPosition) ?: return super.onContextItemSelected(item)
 
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.menu_editar -> {
                 val intent = Intent(this, CadastroActivity::class.java)
                 intent.putExtra("tarefa", tarefa)
                 intent.putExtra("acao", "editar")
                 launcher.launch(intent)
-                return true
+                true
             }
             R.id.menu_excluir -> {
-                tarefas.removeAt(selectedPosition)
-                adapter.notifyItemRemoved(selectedPosition)
-                selectedPosition = -1
-                return true
+                lifecycleScope.launch {
+                    db.tarefaDao().excluir(tarefa)
+                    tarefas.removeAt(selectedPosition)
+                    withContext(Dispatchers.Main) {
+                        adapter.notifyItemRemoved(selectedPosition)
+                    }
+                    selectedPosition = -1
+                }
+                true
             }
             R.id.menu_detalhes -> {
                 val intent = Intent(this, CadastroActivity::class.java)
                 intent.putExtra("tarefa", tarefa)
                 intent.putExtra("acao", "detalhes")
                 launcher.launch(intent)
-                return true
+                true
             }
+            else -> super.onContextItemSelected(item)
         }
-        return super.onContextItemSelected(item)
     }
-
-
-
-    }
+}
