@@ -23,19 +23,6 @@ Parcelable
 
 Coroutines
 
-📦 Estrutura do Projeto
-
-├── model
-│   ├── AppDatabase.kt
-│   ├── Converters.kt
-│   ├── Tarefa.kt
-│   └── TarefaDao.kt
-├── controller
-│   └── TarefaController.kt
-├── view
-│   ├── MainActivity.kt
-│   ├── CadastroActivity.kt
-│   └── TarefaAdapter.kt
 
 🚀 Como Executar
 Clone o repositório.
