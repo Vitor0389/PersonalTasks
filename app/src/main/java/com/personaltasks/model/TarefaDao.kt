@@ -2,6 +2,7 @@ package com.personaltasks.model
 
 import androidx.room.*
 
+// DAO que faz a comunicação com o BD
 @Dao
 interface TarefaDao {
     @Query("SELECT * FROM tarefas")

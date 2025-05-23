@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
     private var selectedPosition = -1
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
-    private lateinit var db: AppDatabase
-
     private lateinit var tarefaController : TarefaController;
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +77,7 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
         carregarTarefas()
     }
 
+
     private fun carregarTarefas() {
         lifecycleScope.launch {
             val lista = tarefaController.listar();
@@ -104,6 +103,7 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
         // menu criado no adapter
     }
 
+    // Função pra manipular o menu de contexto
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val tarefa = tarefas.getOrNull(selectedPosition) ?: return super.onContextItemSelected(item)
 

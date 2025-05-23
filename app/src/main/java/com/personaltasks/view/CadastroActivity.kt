@@ -29,10 +29,6 @@ class CadastroActivity : AppCompatActivity() {
     private var dataSelecionada: Calendar? = null
 
 
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_cadastro);

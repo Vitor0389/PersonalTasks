@@ -2,6 +2,7 @@ package com.personaltasks.model
 import androidx.room.TypeConverter
 import java.util.*
 
+// Conversores de Objeto pra Tipo Primitivo
 class Converters {
     @TypeConverter
     fun fromUUID(uuid: UUID?): String? = uuid?.toString()

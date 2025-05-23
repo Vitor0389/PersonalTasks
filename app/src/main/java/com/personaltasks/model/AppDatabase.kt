@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.*
 import androidx.room.TypeConverters
 
+// Criação do BD  com instância única
+
 @Database(entities = [Tarefa::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {

@@ -8,6 +8,9 @@ import kotlinx.parcelize.Parcelize
 
 import java.util.*
 
+// Entidade a ser mapeada no BD.
+// Parcelable pra lidar com a entidade entre telas
+
 @Parcelize
 @Entity(tableName = "tarefas")
 data class Tarefa(

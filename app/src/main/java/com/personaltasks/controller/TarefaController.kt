@@ -7,10 +7,9 @@ import com.personaltasks.model.AppDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+// Controller p lidar com DAO
 class TarefaController(context: Context) {
     private val tarefaDao = AppDatabase.getDatabase(context).tarefaDao()
-
-
 
     suspend fun listar(): List<Tarefa> = withContext(Dispatchers.IO) {
         tarefaDao.listar()
