@@ -1,4 +1,5 @@
 package com.personaltasks.view
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.personaltasks.R
+import com.personaltasks.R.*
 import com.personaltasks.model.Tarefa
 import java.util.Locale
 import java.util.UUID
@@ -25,13 +27,23 @@ class CadastroActivity : AppCompatActivity() {
     private lateinit var buttonDatePicker: Button
     private lateinit var buttonSalvar: Button
     private lateinit var buttonCancelar: Button
+    private lateinit var selectedState : TextView;
+
+    private lateinit var buttonConcluir : Button
+    private lateinit var buttonDeixarPendente : Button
+
+
 
     private var dataSelecionada: Calendar? = null
 
+    private var concluido : Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
             super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_cadastro);
+            setContentView(layout.activity_cadastro);
 
             editTextNome = findViewById(R.id.editText1)
             editTextDescricao = findViewById(R.id.editText2)
@@ -39,6 +51,12 @@ class CadastroActivity : AppCompatActivity() {
             buttonDatePicker = findViewById(R.id.button_date_picker)
             buttonSalvar = findViewById(R.id.button2)
             buttonCancelar = findViewById(R.id.button3)
+
+            buttonConcluir = findViewById(R.id.button_concluir_tarefa)
+            buttonDeixarPendente = findViewById(R.id.button_deixar_pendente)
+            selectedState = findViewById(R.id.selectedStateText)
+
+
 
             // Recebe tarefa e ação da intent
             val tarefa = intent.getParcelableExtra<Tarefa>("tarefa")
@@ -51,7 +69,9 @@ class CadastroActivity : AppCompatActivity() {
                 editTextNome.setText(it.nome)
                 editTextDescricao.setText(it.descricao)
                 dataSelecionada = Calendar.getInstance().apply { time = it.data }
+                concluido = it.concluida
                 atualizarTextoData()
+                atualizarTextoEstado()
             }
 
             // Se for modo detalhes, desabilita edição e salvar
@@ -60,6 +80,8 @@ class CadastroActivity : AppCompatActivity() {
                 editTextDescricao.isEnabled = false
                 buttonDatePicker.isEnabled = false
                 buttonSalvar.isEnabled = false
+                buttonConcluir.isEnabled = false
+                buttonDeixarPendente.isEnabled = false
             }
 
 
@@ -75,6 +97,14 @@ class CadastroActivity : AppCompatActivity() {
             // Função a ser chamada com o botão de Cancelar
             buttonCancelar.setOnClickListener {
                 finish()
+            }
+
+            buttonConcluir.setOnClickListener{
+                concluirTarefa()
+            }
+
+            buttonDeixarPendente.setOnClickListener(){
+                deixarPendente()
             }
     }
 
@@ -114,6 +144,15 @@ class CadastroActivity : AppCompatActivity() {
         selectedDateText.text = "Data escolhida: ${formato.format(dataSelecionada?.time)}"
     }
 
+    private fun atualizarTextoEstado(){
+        if (concluido){
+            selectedState.text = "Tarefa Concluida"
+        }
+        else{
+            selectedState.text = "Tarefa Pendente"
+        }
+    }
+
     /*
         * Pega os valores digitados pelo usuário
         * Se algum campo (obrigatório) estiver vazio mostra erro e para
@@ -138,7 +177,7 @@ class CadastroActivity : AppCompatActivity() {
             return
         }
 
-        val tarefa = Tarefa(id, nome, descricao, data)
+        val tarefa = Tarefa(id, nome, descricao, data, concluido)
         val intent = Intent()
         intent.putExtra("tarefa", tarefa)
         setResult(RESULT_OK, intent)
@@ -147,6 +186,18 @@ class CadastroActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    private fun concluirTarefa(){
+         this.concluido = true
+
+         selectedState.text = "Tarefa Concluida"
+    }
+
+    private fun deixarPendente(){
+        this.concluido = false
+
+        selectedState.text = "Tarefa Pendente"
     }
 
 }

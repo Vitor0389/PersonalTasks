@@ -14,4 +14,7 @@
     <string name="editar_tarefa">Editar Tarefa</string>
     <string name="excluir_tarefa">Excluir Tarefa</string>
     <string name="detalhes">Detalhes</string>
+    <string name="concluir_tarefa">Concluir Tarefa</string>
+    <string name="deixar_pendente">Deixar pendente</string>
+    <string name="estado">Estado da Tarefa : Nenhum</string>
 </resources>

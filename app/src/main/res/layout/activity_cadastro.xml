@@ -66,6 +66,17 @@
         android:textColor="#090808"
         android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/selectedStateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/estado"
+        android:textColor="#090808"
+        android:textSize="14sp" />
+
+
     <Button
         android:id="@+id/button_date_picker"
         android:layout_width="wrap_content"
@@ -77,6 +88,25 @@
         android:textColor="#FBF9F9" />
 
 
+    <Button
+        android:id="@+id/button_concluir_tarefa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="#090808"
+        android:text="@string/concluir_tarefa"
+        android:textColor="#FBF9F9" />
+
+    <Button
+        android:id="@+id/button_deixar_pendente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="#090808"
+        android:text="@string/deixar_pendente"
+        android:textColor="#FBF9F9" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

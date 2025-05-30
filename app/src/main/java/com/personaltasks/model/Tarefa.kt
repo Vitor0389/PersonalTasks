@@ -17,5 +17,6 @@ data class Tarefa(
     @PrimaryKey val id: UUID,
     val nome: String,
     val descricao: String,
-    val data: Date
+    val data: Date,
+    val concluida : Boolean
 ) : Parcelable

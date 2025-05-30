@@ -28,6 +28,7 @@ class TarefaAdapter(
         val titulo: TextView = itemView.findViewById(R.id.textTitulo)
         val descricao: TextView = itemView.findViewById(R.id.textDescricao)
         val dataLimite: TextView = itemView.findViewById(R.id.textDataLimite)
+        val selectedState : TextView = itemView.findViewById(R.id.textEstado)
 
         init {
             itemView.setOnCreateContextMenuListener(this)
@@ -65,6 +66,13 @@ class TarefaAdapter(
 
         val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.dataLimite.text = "Data limite: ${formato.format(tarefa.data)}"
+
+        if(tarefa.concluida){
+            holder.selectedState.text = "Tarefa Concluida"
+        }
+        else{
+            holder.selectedState.text = "Tarefa Pendente"
+        }
     }
 
     // Conta quantos itens tem na lista
