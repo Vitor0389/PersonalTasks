@@ -1,32 +1,27 @@
 package com.personaltasks.controller
 
-
 import android.content.Context
+import com.personaltasks.model.TarefaDaoFirebase
+import com.personaltasks.model.TarefaFirebaseDatabase
 import com.personaltasks.model.Tarefa
-import com.personaltasks.model.AppDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
-
-// TESTANDO PUSH
-
-// Controller p lidar com DAO
 class TarefaController(context: Context) {
-    private val tarefaDao = AppDatabase.getDatabase(context).tarefaDao()
 
-    suspend fun listar(): List<Tarefa> = withContext(Dispatchers.IO) {
-        tarefaDao.listar()
+    private val tarefaDao: TarefaDaoFirebase = TarefaFirebaseDatabase()
+
+    fun listar(callback: (List<Tarefa>) -> Unit) {
+        tarefaDao.listar(callback)
     }
 
-    suspend fun inserir(tarefa: Tarefa) = withContext(Dispatchers.IO) {
+    fun inserir(tarefa: Tarefa) {
         tarefaDao.inserir(tarefa)
     }
 
-    suspend fun excluir(tarefa: Tarefa) = withContext(Dispatchers.IO) {
-        tarefaDao.excluir(tarefa)
+    fun atualizar(tarefa: Tarefa) {
+        tarefaDao.atualizar(tarefa)
     }
 
-    suspend fun atualizar(tarefa: Tarefa) = withContext(Dispatchers.IO){
-        tarefaDao.atualizar(tarefa)
+    fun excluir(tarefa: Tarefa) {
+        tarefaDao.excluir(tarefa)
     }
 }
