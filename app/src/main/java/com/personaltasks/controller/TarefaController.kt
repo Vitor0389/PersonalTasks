@@ -9,6 +9,8 @@ class TarefaController(context: Context) {
 
     private val tarefaDao: TarefaDaoFirebase = TarefaFirebaseDatabase()
 
+    private var tarefasListener: ((List<Tarefa>) -> Unit)? = null
+
     fun listar(callback: (List<Tarefa>) -> Unit) {
         tarefaDao.listar(callback)
     }
@@ -24,4 +26,10 @@ class TarefaController(context: Context) {
     fun excluir(tarefa: Tarefa) {
         tarefaDao.excluir(tarefa)
     }
+
+    fun setOnTarefasChangedListener(listener: (List<Tarefa>) -> Unit) {
+        tarefasListener = listener
+    }
+
+
 }

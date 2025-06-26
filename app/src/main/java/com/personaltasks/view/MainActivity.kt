@@ -3,22 +3,24 @@ package com.personaltasks.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.personaltasks.R
 import com.personaltasks.controller.TarefaController
-import com.personaltasks.model.AppDatabase
 import com.personaltasks.model.Tarefa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener {
 
@@ -26,8 +28,7 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
     private lateinit var adapter: TarefaAdapter
     private var selectedPosition = -1
     private lateinit var launcher: ActivityResultLauncher<Intent>
-
-    private lateinit var tarefaController : TarefaController;
+    private lateinit var tarefaController: TarefaController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,47 +46,37 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
             if (result.resultCode == RESULT_OK) {
                 val tarefa = result.data?.getParcelableExtra<Tarefa>("tarefa")
                 tarefa?.let {
-                    lifecycleScope.launch {
-                        if (selectedPosition >= 0) {
-                            // Atualiza no banco e na lista
-                            tarefaController.atualizar(it)
-                            tarefas[selectedPosition] = it
-                            withContext(Dispatchers.Main) {
-                                adapter.notifyItemChanged(selectedPosition)
-                            }
-                        } else {
-                            // Insere no banco e na lista
-                            tarefaController.inserir(it)
-                            tarefas.add(it)
-                            withContext(Dispatchers.Main) {
-                                adapter.notifyItemInserted(tarefas.size - 1)
-                            }
-                        }
-                        selectedPosition = -1
+                    if (selectedPosition >= 0) {
+                        tarefaController.atualizar(it)
+                        tarefas[selectedPosition] = it
+                        adapter.notifyItemChanged(selectedPosition)
+                    } else {
+                        tarefaController.inserir(it)
+                        tarefas.add(it)
+                        adapter.notifyItemInserted(tarefas.size - 1)
                     }
+                    selectedPosition = -1
                 }
             }
         }
 
-        findViewById<Button>(R.id.botaoCadastro).setOnClickListener {
+        val botaoCadastro = findViewById<Button>(R.id.botaoCadastro)
+        botaoCadastro.setOnClickListener {
             selectedPosition = -1
             val intent = Intent(this, CadastroActivity::class.java)
             launcher.launch(intent)
         }
 
-        // Carrega as tarefas do banco ao iniciar a activity
         carregarTarefas()
     }
 
 
-    private fun carregarTarefas() {
-        lifecycleScope.launch {
-            val lista = tarefaController.listar();
-            tarefas.clear()
-            tarefas.addAll(lista)
-            withContext(Dispatchers.Main) {
-                adapter.notifyDataSetChanged()
-            }
+    override fun onStart() {
+        super.onStart()
+        val user = Firebase.auth.currentUser
+        if (user == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 
@@ -94,46 +85,65 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
         view.showContextMenu()
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu,
-        v: View,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        // menu criado no adapter
+        // Menu criado no adapter
     }
 
-    // Função pra manipular o menu de contexto
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val tarefa = tarefas.getOrNull(selectedPosition) ?: return super.onContextItemSelected(item)
-
         return when (item.itemId) {
             R.id.menu_editar -> {
-                val intent = Intent(this, CadastroActivity::class.java)
-                intent.putExtra("tarefa", tarefa)
-                intent.putExtra("acao", "editar")
+                val intent = Intent(this, CadastroActivity::class.java).apply {
+                    putExtra("tarefa", tarefa)
+                    putExtra("acao", "editar")
+                }
                 launcher.launch(intent)
                 true
             }
             R.id.menu_excluir -> {
-                lifecycleScope.launch {
-                    tarefaController.excluir(tarefa)
-                    tarefas.removeAt(selectedPosition)
-                    withContext(Dispatchers.Main) {
-                        adapter.notifyItemRemoved(selectedPosition)
-                    }
-                    selectedPosition = -1
-                }
+                tarefaController.excluir(tarefa)
+                // A lista será atualizada via listener do controller, por isso não precisa atualizar adapter aqui
+                selectedPosition = -1
+                Toast.makeText(this, "Tarefa excluída", Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.menu_detalhes -> {
-                val intent = Intent(this, CadastroActivity::class.java)
-                intent.putExtra("tarefa", tarefa)
-                intent.putExtra("acao", "detalhes")
+                val intent = Intent(this, CadastroActivity::class.java).apply {
+                    putExtra("tarefa", tarefa)
+                    putExtra("acao", "detalhes")
+                }
                 launcher.launch(intent)
                 true
             }
             else -> super.onContextItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_opcoes, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_nova_tarefa -> {
+                selectedPosition = -1
+                val intent = Intent(this, CadastroActivity::class.java)
+                launcher.launch(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun carregarTarefas() {
+        tarefaController.listar { lista ->
+            lifecycleScope.launch(Dispatchers.Main) {
+                tarefas.clear()
+                tarefas.addAll(lista)
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 }
