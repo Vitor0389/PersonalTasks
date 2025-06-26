@@ -38,6 +38,10 @@ android {
     }
     buildFeatures {
         compose = false    }
+
+    viewBinding{
+        enable = true
+    }
 }
 
 dependencies {
@@ -62,4 +66,17 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.database.ktx)
+
+    // Firebase Ui Auth
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.auth)
+
+    // Google Id  Auth
+    implementation(libs.credentials)
+    implementation(libs.credentials.play.services.auth)
+    implementation(libs.googleid)
 }
