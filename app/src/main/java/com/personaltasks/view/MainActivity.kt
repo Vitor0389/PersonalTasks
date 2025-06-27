@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-// TESTE PUSH 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
+// TESTE PUSH 
 
 
 class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener {
