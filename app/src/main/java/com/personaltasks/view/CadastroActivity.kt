@@ -28,15 +28,25 @@ class CadastroActivity : AppCompatActivity() {
     private lateinit var buttonSalvar: Button
     private lateinit var buttonCancelar: Button
     private lateinit var selectedState : TextView;
+    private lateinit var selectedPrioridade : TextView;
 
     private lateinit var buttonConcluir : Button
     private lateinit var buttonDeixarPendente : Button
+    private lateinit var buttonPrioridadeAlta : Button
+    private lateinit var buttonPrioridadeMedia : Button
+    private lateinit var buttonPrioridadeBaixa : Button
 
 
 
     private var dataSelecionada: Calendar? = null
 
     private var concluido : Boolean = false
+
+    private var prioridadeAlta : Boolean = false
+
+    private var prioridadeMedia : Boolean = false
+
+    private var prioridadeBaixa : Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +64,13 @@ class CadastroActivity : AppCompatActivity() {
 
             buttonConcluir = findViewById(R.id.button_concluir_tarefa)
             buttonDeixarPendente = findViewById(R.id.button_deixar_pendente)
+            buttonPrioridadeAlta = findViewById(R.id.button_prioridade_alta)
+            buttonPrioridadeMedia = findViewById(R.id.button_prioridade_media)
+            buttonPrioridadeBaixa = findViewById(R.id.button_prioridade_baixa)
+
             selectedState = findViewById(R.id.selectedStateText)
+            selectedPrioridade = findViewById(R.id.selectedPrioridadeText)
+
 
 
 
@@ -70,8 +86,13 @@ class CadastroActivity : AppCompatActivity() {
                 editTextDescricao.setText(it.descricao)
                 dataSelecionada = Calendar.getInstance().apply { timeInMillis = it.data }
                 concluido = it.concluida
+                prioridadeAlta = it.prioridadeAlta
+                prioridadeMedia = it.prioridadeMedia
+                prioridadeBaixa = it.prioridadeBaixa
+
                 atualizarTextoData()
                 atualizarTextoEstado()
+                atualizarTextoPrioridade()
             }
 
             // Se for modo detalhes, desabilita edição e salvar
@@ -82,6 +103,10 @@ class CadastroActivity : AppCompatActivity() {
                 buttonSalvar.isEnabled = false
                 buttonConcluir.isEnabled = false
                 buttonDeixarPendente.isEnabled = false
+                buttonPrioridadeAlta.isEnabled = false
+                buttonPrioridadeMedia.isEnabled = false
+                buttonPrioridadeBaixa.isEnabled = false
+
             }
 
 
@@ -105,6 +130,18 @@ class CadastroActivity : AppCompatActivity() {
 
             buttonDeixarPendente.setOnClickListener(){
                 deixarPendente()
+            }
+
+            buttonPrioridadeAlta.setOnClickListener(){
+                deixarPrioridadeAlta()
+            }
+
+            buttonPrioridadeMedia.setOnClickListener(){
+                deixarPrioridadeMedia()
+            }
+
+            buttonPrioridadeBaixa.setOnClickListener(){
+                deixarPrioridadeBaixa()
             }
     }
 
@@ -153,6 +190,20 @@ class CadastroActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun atualizarTextoPrioridade(){
+
+        if(prioridadeAlta){
+            selectedPrioridade.text = "Baixa"
+        }
+        else if(prioridadeMedia){
+            selectedPrioridade.text = "Media"
+        }
+        else{
+            selectedPrioridade.text = "Alta"
+        }
+    }
+
     /*
         * Pega os valores digitados pelo usuário
         * Se algum campo (obrigatório) estiver vazio mostra erro e para
@@ -182,7 +233,11 @@ class CadastroActivity : AppCompatActivity() {
             nome = nome,
             descricao = descricao,
             data = dataSelecionada?.timeInMillis ?: 0L,
-            concluida = concluido
+            concluida = concluido,
+            prioridadeAlta = prioridadeAlta,
+            prioridadeMedia = prioridadeMedia,
+            prioridadeBaixa = prioridadeBaixa
+
         )
         val intent = Intent()
         intent.putExtra("tarefa", tarefa)
@@ -204,6 +259,26 @@ class CadastroActivity : AppCompatActivity() {
         this.concluido = false
 
         selectedState.text = "Tarefa Pendente"
+    }
+
+    private fun deixarPrioridadeAlta(){
+
+        this.prioridadeAlta = true
+        this.prioridadeMedia = false
+        this.prioridadeBaixa = false
+        selectedPrioridade.text = "Alta"
+    }
+
+    private fun deixarPrioridadeMedia(){
+        this.prioridadeMedia= true
+        this.prioridadeAlta = false
+        this.prioridadeBaixa = false
+        selectedPrioridade.text = "Media"
+    }
+
+    private fun deixarPrioridadeBaixa(){
+        this.prioridadeBaixa = false
+        selectedPrioridade.text = "Baixa"
     }
 
 }

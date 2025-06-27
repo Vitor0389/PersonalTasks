@@ -13,4 +13,7 @@ data class Tarefa(
     val data: Long = 0L,
     val concluida: Boolean = false,
     val excluida: Boolean = false,
+    val prioridadeAlta : Boolean = false,
+    val prioridadeMedia : Boolean = false,
+    val prioridadeBaixa : Boolean = false
 ) : Parcelable
