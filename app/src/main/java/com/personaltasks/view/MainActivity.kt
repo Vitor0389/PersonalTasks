@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.personaltasks.R
 import com.personaltasks.controller.TarefaController
 import com.personaltasks.model.Tarefa
@@ -48,12 +49,8 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
                 tarefa?.let {
                     if (selectedPosition >= 0) {
                         tarefaController.atualizar(it)
-                        tarefas[selectedPosition] = it
-                        adapter.notifyItemChanged(selectedPosition)
                     } else {
                         tarefaController.inserir(it)
-                        tarefas.add(it)
-                        adapter.notifyItemInserted(tarefas.size - 1)
                     }
                     selectedPosition = -1
                 }
@@ -67,8 +64,16 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
             launcher.launch(intent)
         }
 
-        carregarTarefas()
+        tarefaController.setOnTarefasChangedListener { lista ->
+            lifecycleScope.launch(Dispatchers.Main) {
+                tarefas.clear()
+                tarefas.addAll(lista)
+                adapter.notifyDataSetChanged()
+            }
+        }
+        tarefaController.listar {}
     }
+
 
 
     override fun onStart() {
@@ -137,13 +142,5 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
         }
     }
 
-    private fun carregarTarefas() {
-        tarefaController.listar { lista ->
-            lifecycleScope.launch(Dispatchers.Main) {
-                tarefas.clear()
-                tarefas.addAll(lista)
-                adapter.notifyDataSetChanged()
-            }
-        }
-    }
+
 }

@@ -20,7 +20,7 @@ class CadastroActivity : AppCompatActivity() {
 
     // Referência dos componentes
 
-    private var id : UUID = UUID.randomUUID();
+    private var id : String = UUID.randomUUID().toString();
     private lateinit var editTextNome: EditText
     private lateinit var editTextDescricao: EditText
     private lateinit var selectedDateText: TextView
@@ -68,7 +68,7 @@ class CadastroActivity : AppCompatActivity() {
                 id = it.id
                 editTextNome.setText(it.nome)
                 editTextDescricao.setText(it.descricao)
-                dataSelecionada = Calendar.getInstance().apply { time = it.data }
+                dataSelecionada = Calendar.getInstance().apply { timeInMillis = it.data }
                 concluido = it.concluida
                 atualizarTextoData()
                 atualizarTextoEstado()
@@ -177,7 +177,13 @@ class CadastroActivity : AppCompatActivity() {
             return
         }
 
-        val tarefa = Tarefa(id, nome, descricao, data, concluido)
+        val tarefa = Tarefa(
+            id = id,
+            nome = nome,
+            descricao = descricao,
+            data = dataSelecionada?.timeInMillis ?: 0L,
+            concluida = concluido
+        )
         val intent = Intent()
         intent.putExtra("tarefa", tarefa)
         setResult(RESULT_OK, intent)
