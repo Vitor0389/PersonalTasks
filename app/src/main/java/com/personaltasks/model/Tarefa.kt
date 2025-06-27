@@ -11,5 +11,6 @@ data class Tarefa(
     val nome: String = "",
     val descricao: String = "",
     val data: Long = 0L,
-    val concluida: Boolean = false
+    val concluida: Boolean = false,
+    val excluida: Boolean = false,
 ) : Parcelable

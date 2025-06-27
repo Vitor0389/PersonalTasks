@@ -1,0 +1,4 @@
+<resources>
+    <item name="menu_reativar" type="id" />
+    <item name="menu_detalhes" type="id" />
+</resources>
