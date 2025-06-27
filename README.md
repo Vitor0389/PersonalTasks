@@ -54,4 +54,4 @@ Conta Firebase configurada.
 
 🎥 Demonstração
 Link para vídeo de execução do app:
-https://drive.google.com/file/d/1U1lDUsdxvPqYAQejv5DD4zeXpq8BkmiC/view?usp=sharing
+https://drive.google.com/file/d/1ckHBY1nK-3SEDOBjOd9_MI9YKJUNTbK3/view?usp=sharing
