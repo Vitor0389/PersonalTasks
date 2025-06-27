@@ -23,6 +23,8 @@ import com.personaltasks.model.Tarefa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
+// TESTE PUSH
 class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener {
 
     private val tarefas = mutableListOf<Tarefa>()
