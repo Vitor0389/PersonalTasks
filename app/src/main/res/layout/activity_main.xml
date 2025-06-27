@@ -28,6 +28,15 @@
         android:paddingBottom="8dp" />
 
     <Button
+        android:id="@+id/botaoTarefasExcluidas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tarefas Excluídas"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="72dp" />
+
+    <Button
         android:id="@+id/botaoCadastro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -64,6 +64,12 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
             launcher.launch(intent)
         }
 
+        val botaoTarefasExcluidas = findViewById<Button>(R.id.botaoTarefasExcluidas)
+        botaoTarefasExcluidas.setOnClickListener {
+            val intent = Intent(this, TarefasExcluidasActivity::class.java)
+            startActivity(intent)
+        }
+
         tarefaController.setOnTarefasChangedListener { lista ->
             lifecycleScope.launch(Dispatchers.Main) {
                 tarefas.clear()
@@ -136,6 +142,11 @@ class MainActivity : AppCompatActivity(), TarefaAdapter.OnItemLongClickListener 
                 selectedPosition = -1
                 val intent = Intent(this, CadastroActivity::class.java)
                 launcher.launch(intent)
+                true
+            }
+
+            R.id.action_tarefas_excluidas -> {
+                startActivity(Intent(this, TarefasExcluidasActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

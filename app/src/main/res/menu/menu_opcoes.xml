@@ -7,4 +7,9 @@
         android:title="@string/nova_tarefa"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_tarefas_excluidas"
+        android:title="Tarefas Excluídas"
+        app:showAsAction="ifRoom" />
+
 </menu>

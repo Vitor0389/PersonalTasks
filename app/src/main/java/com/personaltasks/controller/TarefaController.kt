@@ -11,9 +11,12 @@
 
         private var tarefasListener: ((List<Tarefa>) -> Unit)? = null
 
+        private var tarefasExcluidasListener: ((List<Tarefa>) -> Unit)? = null
+
         fun listar(callback: (List<Tarefa>) -> Unit) {
             tarefaDao.listar {
-                tarefasListener?.invoke(it)
+                val naoExcluidas = it.filter { tarefa -> !tarefa.excluida }
+                tarefasListener?.invoke(naoExcluidas)
             }
         }
 
@@ -26,11 +29,20 @@
         }
 
         fun excluir(tarefa: Tarefa) {
-            tarefaDao.excluir(tarefa)
+            val excluida = tarefa.copy(excluida = true)
+            atualizar(excluida)
+        }
+
+        fun listarExcluidas(callback: (List<Tarefa>) -> Unit) {
+            tarefaDao.listarExcluidas(callback)
         }
 
         fun setOnTarefasChangedListener(listener: (List<Tarefa>) -> Unit) {
             tarefasListener = listener
+        }
+
+        fun setOnTarefasExcluidasChangedListener(listener: (List<Tarefa>) -> Unit) {
+            tarefasExcluidasListener = listener
         }
 
 
